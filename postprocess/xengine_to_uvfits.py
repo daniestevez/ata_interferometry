@@ -84,6 +84,14 @@ def export_uvfits(t0, T, y, uvw, source_name, source, fc, samp_rate,
     uv = np.einsum('ijkl->ikjl', uv)
     uv = uv.reshape((-1, uv.shape[2], uv.shape[3]))
     UV.data_array[:] = uv[:,np.newaxis,:,[0,3,1,2]]
+
+    # Workaround CASA bug involving flipping baselines on concat():
+    # we flip baselines if necessary so as to get ant_1 <= ant_2
+    flip_blts = UV.ant_1_array > UV.ant_2_array
+    UV.ant_1_array[flip_blts], UV.ant_2_array[flip_blts] = \
+      UV.ant_2_array[flip_blts], UV.ant_1_array[flip_blts]
+    UV.uvw_array[flip_blts] *= -1
+    UV.data_array[flip_blts] = np.conjugate(UV.data_array[flip_blts])
     
     # correct for weird rotECEF convention
     UV.antenna_positions = pyuvdata.utils.ECEF_from_rotECEF(UV.antenna_positions,
