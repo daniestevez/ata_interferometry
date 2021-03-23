@@ -103,6 +103,15 @@ def parse_args():
     parser.add_argument('output', metavar = 'OUTPUT', help = 'output directory')
     return parser.parse_args()
 
+def read_sync_time(metadata):
+    sync = metadata['snap_sync_time']
+    if type(sync) is str:
+        return Time(sync)
+    elif type(sync) is int:
+        return Time(sync, format = 'unix')
+    else:
+        raise ValueError('Invalid snap_sync_time format')
+
 def main():
     args = parse_args()
 
@@ -133,7 +142,7 @@ def main():
         chan_fs = metadata['channel_width']
         n = n_baselines * n_pols * n_chans
         x = x[:x.size//n*n].reshape((-1, n_chans, n_baselines, n_pols**2))
-        t_sync = Time(metadata['snap_sync_time'])
+        t_sync = read_sync_time(metadata)
         t0 = t_sync + TimeDelta(metadata['first_seq_num'] / chan_fs, format = 'sec')
         f_first = metadata['first_channel_center_freq']
         f = n_chans/2*chan_fs + f_first
