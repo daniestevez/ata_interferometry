@@ -112,7 +112,12 @@ def parse_args():
     return parser.parse_args()
 
 def read_sync_time(metadata):
-    sync = metadata['snap_sync_time']
+    # Both snap_sync_time and sync_timestamp are
+    # allowed keywords for the SNAP sync timestamp
+    try:
+        sync = metadata['snap_sync_time']
+    except KeyError:
+        sync = metadata['sync_timestamp']
     if type(sync) is str:
         return Time(sync)
     elif type(sync) is int:
