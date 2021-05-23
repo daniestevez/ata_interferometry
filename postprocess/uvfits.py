@@ -142,7 +142,7 @@ def export_uvfits(t0, T, corrs, uvw,
     UV.flag_array = np.zeros((UV.Nblts, UV.Nspws, UV.Nfreqs, UV.Npols),
                              'bool')
     UV.nsample_array = np.empty((UV.Nblts, UV.Nspws, UV.Nfreqs, UV.Npols),
-                                 'float')
+                                'float')
     UV.nsample_array[:] = 1
     # Reorder axes to (time, baseline, freq, polarization)
     uv = np.einsum('ijkl->ikjl', uv)
