@@ -161,7 +161,7 @@ def export_uvfits(t0, T, corrs, uvw,
     UV.uvw_array[flip_blts] *= -1
     # Perform complex conjugate and exchange XY and YX polarizations
     UV.data_array[flip_blts] = np.conjugate(
-        UV.data_array[flip_blts][..., [0, 1, 3, 2])
+        UV.data_array[flip_blts][..., [0, 1, 3, 2]])
 
     # Correct for weird rotECEF convention
     UV.antenna_positions = pyuvdata.utils.ECEF_from_rotECEF(
