@@ -147,7 +147,7 @@ def main():
                      '-'.join([ants[1], ants[1]])]
 
         timestamps = total_timestamps(scan, input_path, nfft)
-        offsets = ([0] if not hasattr(args, 'max_timestamps')
+        offsets = ([0] if args.max_timestamps is None
                    else range(0, timestamps, args.max_timestamps))
         if len(offsets) > 1:
             print(f'File is too large, processing in {len(offsets)} chunks')
