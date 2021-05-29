@@ -185,7 +185,7 @@ directory and concatenate them into a single MS.
 import pathlib
 
 # Replace with a more descriptive name
-output_ms = `observation.ms`
+output_ms = 'observation.ms'
 
 uvfits = [str(s) for s in pathlib.Path('.').glob('*.uvfits')]
 ms = [s.replace('uvfits', 'ms') for s in uvfits]
