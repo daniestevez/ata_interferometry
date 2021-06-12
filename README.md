@@ -54,7 +54,7 @@ by uncorrected delays (the correlator does not implement delay correction yet).
 For example, an observation of the source 3C84 using antennas 3l
 and 2j at a sky frequency of 8460 MHz would be run as
 ```
-./polarimetry/polarimetric_interferometry.py --src-name 3C84 --lo-freq 8460 \
+gnuradio/polarimetric_interferometry.py --src-name 3C84 --lo-freq 8460 \
     --nfft 2048 --antennas 3l-2j
 ```
 
