@@ -110,7 +110,7 @@ For instance, the post processing script can be run in the following way to
 process all the files in `/mnt/buf0`:
 ```
 postprocess/grmeta_to_uvfits.py antennas/antenna_coordinates_ecef.txt \
-    usrps/antenna_delays.json observation.json
+    usrps/antenna_delays.json observation.json \
     /mnt/buf0 10 32 ~/uvfits_output/
 ```
 
