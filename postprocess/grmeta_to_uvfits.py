@@ -99,15 +99,28 @@ def parse_args():
     return parser.parse_args()
 
 
-def pol_swap(baseline):
-    swapped = {'1c', '2b'}
-    ant1, ant2 = baseline.split('-')
+def pol_swap(x, baseline):
+    swapped = {'1c', '2b', '3l'}
+    ant0, ant1 = baseline.split('-')
     pol_array = np.arange(4)
+    if ant0 in swapped:
+        pol_swap_ant0(x)
     if ant1 in swapped:
-        pol_array = pol_array[np.array([2, 3, 0, 1])]
-    if ant2 in swapped:
-        pol_array = pol_array[np.array([1, 0, 3, 2])]
-    return pol_array
+        pol_swap_ant1(x)
+
+
+def pol_swap_ant0(x):
+    # autocorrelations
+    x[:, :, 0, :] = x[:, :, 0, [3, 2, 1, 0]]
+    # crosscorrelations on baseline 1-0
+    x[:, :, 1, :] = x[:, :, 1, [1, 0, 3, 2]]
+
+
+def pol_swap_ant1(x):
+    # autocorrelations
+    x[:, :, 2, :] = x[:, :, 0, [3, 2, 1, 0]]
+    # crosscorrelations on baseline 1-0
+    x[:, :, 1, :] = x[:, :, 1, [2, 3, 0, 1]]
 
 
 def main():
@@ -156,8 +169,8 @@ def main():
                 scan, input_path, nfft, offset,
                 timestamps if len(offsets) == 1 else args.max_timestamps)
 
-            # Hack to swap polarizations on 2b and 1c
-            x = x[..., pol_swap(baseline)]
+            # Swap polarizations if needed
+            pol_swap(x, baseline)
 
             if x.size == 0:
                 print('Skipping empty file')
