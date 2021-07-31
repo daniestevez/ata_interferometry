@@ -196,3 +196,16 @@ concat(vis = ms, concatvis = output_ms)
 for vis in ms:
     rmtables(vis)
 ```
+
+This will give a different observation IDs to each of the UVFITS files. Often, it
+is more convenient to have the same observation ID for all the data (since for
+instance `plotms()` cannot average across different observation IDs). This can
+be accomplished by running the following:
+
+```
+tb.open('observation.ms', nomodify=False)
+a = tb.getcol('OBSERVATION_ID')
+a[:] = 0
+tb.putcol('OBSERVATION_ID', a)
+tb.close()
+```
