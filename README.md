@@ -175,6 +175,33 @@ above. There are the following differences with the USRP post processing:
   frequency averaging of 2 or 4 can be used to reduce the output file size if high
   frequency resolution is not needed.
 
+
+### Post processing of the RFSoC xGPU correlator
+
+Postprocessing is similar to the above, and the main script to do that is 
+`postprocess/xgpu_to_uvfits.py`. The current files produced by xGPU contain the 
+baselines for 32 antennas, which is more than what is available to the RFSoC 
+boards (20 at the moment). The postprocessor has to then remove the redundant 
+baselines from the data.
+
+* The antenna specific cable delays to the RFSoC boards are in 
+  `rfsocs/antenna_delays.json`
+
+* An observation metadata `.json` file. A template is given in
+ `rfsocs/metadata.json`. 
+  The entries are self explanatory, but in particular: 
+    * `first_seq_num` is the sequence number of the first spectrum that was used to 
+      start the observation. Sequence number 1 is the time when the boards were 
+      synchronised.
+    * `sync_timestamp` is the unix time second when the boards were synced.
+    * `ntime` is the number of integrations, summed in the GPUs.
+    * `n_ants_gpu` is the number of antennas xGPU has correlated. Note that a 
+      limitation of xGPU is that is should be compiled with number of antennas 
+      divisible by 16. Thus it has to be provided with redundant data that need to 
+      be removed later in processing. The number of redundant antennas is computed 
+      as follows: `n_ants_xgpu` - `len(antenna_names)`
+
+
 ### Importing UVFITS files in CASA
 
 The following Python code can be used in CASA (for instance, by pasting it in

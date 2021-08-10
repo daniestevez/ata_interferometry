@@ -1,0 +1,12 @@
+{
+    "antenna_names": "1c,1e,1g,1h,1k,2a,2b,2c,2e,2h,2j,2k,2l,2m,3c,3d,3l,4j,5b,4g",
+    "polarizations": 2,
+    "channels": 384,
+    "channel_width": 0.25e6,
+    "first_seq_num": 10325000000,
+    "object_name": "3C286", 
+    "sync_timestamp": 1627679496,
+    "first_channel_center_freq": 5903875000,
+    "ntime": 8736,
+    "n_ants_xgpu": 32
+}
