@@ -7,6 +7,7 @@
 
 from astropy.coordinates import Angle, SkyCoord
 import numpy as np
+import toml
 
 
 def read_antenna_coordinates(path):
@@ -18,6 +19,12 @@ def read_antenna_coordinates(path):
         A dictionary indexed by antenna name containing the ECEF coordinates
         of each antenna
     """
+    if str(path).endswith('.toml'):
+        return read_antenna_coordinates_toml(path)
+    return read_antenna_coordinates_txt(path)
+
+
+def read_antenna_coordinates_txt(path):
     with open(path) as f:
         lines = f.readlines()[1:]
 
@@ -26,6 +33,12 @@ def read_antenna_coordinates(path):
     for j in range(3):
         ecef[:, j] = np.array([float(line.split(',')[j+1]) for line in lines])
     return {a.lower(): e for a, e in zip(ants, ecef)}
+
+
+def read_antenna_coordinates_toml(path):
+    data = toml.load(path)['antennas']
+    return {a['name'].lower(): np.array(a['position'])
+            for a in data}
 
 
 def skycoord_from_source(source):
